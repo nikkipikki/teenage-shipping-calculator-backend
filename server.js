@@ -12,7 +12,9 @@ app.use(bodyParser.json())
 app.use(cors())
 
 // Connect to MongoDB, on the "products-api" database. If the db doesn't exist, mongo will create it.
-mongoose.connect("mongodb://localhost/products-te", { useMongoClient: true })
+// mongoose.connect("mongodb://localhost/products-te", { useMongoClient: true })
+const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/products-te"
+mongoose.connect(mongoUrl, { useMongoClient: true })
 
 // This makes mongo use ES6 promises, instead of its own implementation
 mongoose.Promise = Promise
@@ -103,4 +105,8 @@ app.post("/calculate", (req, res) => {
   })
 })
 
-app.listen(8080, () => console.log("Products API listening on port 8080!"))
+// app.listen(8080, () => console.log("Products API listening on port 8080!"))
+const port = process.env.PORT || 8080
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`)
+})
